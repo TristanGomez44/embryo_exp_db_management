@@ -4,7 +4,7 @@ import sqlite3
 import os 
 import numpy as np
 
-from generate_logins_mdps_and_mails import generate_logins_and_mails,hash_passwd
+from generate_logins_and_mails import generate_logins_and_mails,hash_passwd
 from test import single_match_query
 
 def make_backup(video_nb,database_path):
@@ -94,10 +94,12 @@ def add_images_to_videos(video_names,nb_of_annot_per_vid,c):
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--database_path",type=str,default="../database.db")
+    parser.add_argument("--database_path",type=str,default="../database_25-07-2023.db")
     parser.add_argument("--cleaning_script_path",type=str,default="clean_database.sql")
     parser.add_argument("--seed",type=int,default=0)
     parser.add_argument("--nb_of_annot_per_vid",type=int,default=5)
+    parser.add_argument("--participant_target_nb",type=int,default=70)
+    
     parser.add_argument("--debug_user_name",type=str,default="debug")
 
     parser.add_argument("--user_nb_csv",type=str,default="comptes_expeembryon.csv")
@@ -107,7 +109,7 @@ def main():
     parser.add_argument("--email_name_path",type=str,default="email_names.csv")
     args = parser.parse_args()
 
-    login_list,hashed_passwd_list,center_list = generate_logins_and_mails(args.logins_and_mail_folder,args.user_nb_csv,args.password_size,args.mail_template_path,args.email_name_path)
+    login_list,hashed_passwd_list,center_list = generate_logins_and_mails(args.logins_and_mail_folder,args.user_nb_csv,args.password_size,args.mail_template_path,args.email_name_path,args.participant_target_nb)
 
     video_nb = len(login_list)
 

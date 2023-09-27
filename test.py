@@ -17,6 +17,7 @@ def main():
     parser.add_argument("--video_number",type=int)
     parser.add_argument("--database_path",type=str)
     parser.add_argument("--nb_of_annot_per_vid",type=int,default=5)
+    parser.add_argument("--debug_user_name",type=str,default="debug")
     args = parser.parse_args()
 
     assert os.path.exists(args.database_path), "Database does not exists"
@@ -24,14 +25,17 @@ def main():
     conn = sqlite3.connect(args.database_path)
     c = conn.cursor()
 
-    c.execute(f"SELECT * FROM image WHERE nameImage LIKE 'F0%'")
+    debug_user_id = single_match_query(f"select id from user where username=='{args.debug_user_name}'",c)[0]
+    debug_vid_id = single_match_query(f"select id from video where idOwner=={debug_user_id}",c)[0]
+    
+    c.execute(f"SELECT * FROM image WHERE nameImage LIKE 'F0%' and idVideo=={debug_vid_id}")
     imgs = np.array(c.fetchall())
 
     duplicate_ids = []
     wrong_annot_nb_ids = []
 
     for img in imgs:
-        
+
         img_name = img[5]
 
         query = f"select idVideo from image where nameImage=='{img_name}'"
@@ -50,27 +54,13 @@ def main():
     csv = "idVideo,count,video_name,idOwner,username\n"
 
     for idVideo in range(1,args.video_number+1):
+
         query = f"select COUNT(*) from image where idVideo=={idVideo}"
         c.execute(query)
         count = c.fetchone()[0]
 
         idOwner,video_name = single_match_query(f"select idOwner,name from video where id=={idVideo}",c)
-
-        #query = f"select idOwner,name from video where id=={idVideo}"
-        #c.execute(query)
-        #matching_vids = c.fetchall()
-        #assert len(matching_vids) == 1,f"Several videos have id={idVideo},{matching_vids}"
-        #matching_vid = matching_vids[0]
-        #idOwner,video_name = matching_vid
-        
         username = single_match_query(f"select username from user where id=={idOwner}",c)[0]
-
-        #query = f"select username from user where id=={idOwner}"
-        #c.execute(query)
-        #matching_users = c.fetchall()
-        #assert len(matching_users) == 1,f"Several users have id={idOwner},{matching_users}"
-        #matching_user = matching_users[0]
-        #username = matching_user[0]
 
         csv += f"{idVideo},{count},{video_name},{idOwner},{username}\n"
     
