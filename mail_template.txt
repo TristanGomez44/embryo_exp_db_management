@@ -1,0 +1,33 @@
+Bonjour {name},
+
+Je suis Tristan Gomez, post-doctorant au Laboratoire des sciences du numérique de Nantes et c'est moi qui m'occupe de la partie technique de l'expérience que Thomas Fréour vous a proposé récemment par mail.
+
+L'expérience consiste donc d'abord à vous connecter sur ce site: https://expembryon.univ-nantes.fr/.
+Si je ne me trompe pas, vous êtes {participant_nb} à vouloir participer à l'étude dans votre équipe. 
+Voici donc ci-dessous les {participant_nb} identifiants et mot de passe à vous répartir entre pour vous connecter sur le site:
+
+{logins_mdps}
+
+Une fois que vous avez réparti les identifiants, veuillez m'envoyer l'affectation choisie pour chaque personne (avec nom/prénom/mail) afin que je puisse envoyer un message en cas de problème.
+
+Une fois connecté, vous devrez cliquer sur le bouton indiqué dans la capture d'écran 1 (en pièce-jointe) pour commencer les annotations.
+Vous verez alors s'afficher une première image de blastocyste, et vous devrez annoter l'ICM, le TE et l'expansion selon la classification de Gardner.
+Les boutons rouges et bleus servent respectivement à annoter l'ICM et le TE et les berts boutons en bas permettent d'annoter l'expansion.
+Vous pouvez aussi effacer les annotations à l'aide du bouton "Effacer".
+Enfin, une fois l'annotations faite, vous pouvez passer à l'image suivante avec la flèche en haut à droite.
+
+Quelques remarques: 
+- Vous pouvez interrompre votre session d'annotation et reprendre plus tard, car les annotations sont systématiquement sauvegardées. Lorsque vous vous reconnecterez, le site vous fera reprendre là où vous étiez rendu.
+- Il est très important que vous annotiez les blastocystes chacun de votre côté, pour ne pas créer de biais dans le jeu de données.
+- Nous avons estimé qu'il faut environ maximum 10 secondes pour annoter un blastocyste. 
+Etant donné qu'il y a 230 blastocystes par participant à annoter, nous estimons que cela devrait vous prendre pas plus d'une demi-heure par participant.
+
+N'hésitez pas à communiquer avec moi si vous avez quelquonque problème.
+
+Merci beaucoup de participer à cette expérience.
+
+En vous souhaitant une bonne journée,
+
+Cordialement,
+
+Tristan Gomez.

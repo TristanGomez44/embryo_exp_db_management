@@ -31,8 +31,13 @@ def main():
 
     generate_logins(args.out_folder_path,args.csv_path,args.password_size)
 
-def generate_logins(out_folder_path,csv_path,password_size):
+def generate_logins_and_mails(out_folder_path,csv_path,password_size):
+
+    out_folder_path = pathlib.Path(out_folder_path)
     os.makedirs(out_folder_path,exist_ok=True)
+    os.makedirs(out_folder_path / "logins",exist_ok=True)
+    os.makedirs(out_folder_path / "mails",exist_ok=True)
+
     csv = np.genfromtxt(csv_path,delimiter=",",dtype=str)
     alphabet = string.ascii_letters + string.digits
 
@@ -68,11 +73,12 @@ def generate_logins(out_folder_path,csv_path,password_size):
 
             csv += f"{login},{passwd}\n"
         
-        csv_path = pathlib.Path(out_folder_path,login_pref+".csv")
-
+        csv_path = pathlib.Path(out_folder_path,"logins",login_pref+".csv")
         with open(csv_path,"w") as file:
             print(csv,file=file)
     
+        write_email(csv,out_folder_path,email)
+
     return login_list,hashed_passwd_list,center_list
 
 if __name__ == "__main__":

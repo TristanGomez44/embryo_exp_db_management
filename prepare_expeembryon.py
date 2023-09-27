@@ -4,7 +4,7 @@ import sqlite3
 import os 
 import numpy as np
 
-from generate_logins import generate_logins,hash_passwd
+from generate_logins_mdps_and_mails import generate_logins_and_mails,hash_passwd
 from test import single_match_query
 
 def make_backup(video_nb,database_path):
@@ -101,11 +101,13 @@ def main():
     parser.add_argument("--debug_user_name",type=str,default="debug")
 
     parser.add_argument("--user_nb_csv",type=str,default="comptes_expeembryon.csv")
-    parser.add_argument("--logins_mdp_folder",type=str,default="logins")
+    parser.add_argument("--logins_and_mail_folder",type=str,default=".")
     parser.add_argument("--password_size",type=int,default=10)
+    parser.add_argument("--mail_template_path",type=str,default="mail_template.txt")
+    parser.add_argument("--email_name_path",type=str,default="email_names.csv")
     args = parser.parse_args()
 
-    login_list,hashed_passwd_list,center_list = generate_logins(args.logins_mdp_folder,args.user_nb_csv,args.password_size)
+    login_list,hashed_passwd_list,center_list = generate_logins_and_mails(args.logins_and_mail_folder,args.user_nb_csv,args.password_size,args.mail_template_path,args.email_name_path)
 
     video_nb = len(login_list)
 
