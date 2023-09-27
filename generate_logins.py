@@ -7,6 +7,11 @@ import secrets
 import string
 import pathlib,hashlib
 
+def hash_passwd(passwd):
+    byte_passwd = str.encode(passwd)
+    hashed_passwd = hashlib.sha256(byte_passwd).hexdigest()
+    return hashed_passwd
+
 def prevent_duplicate(login_pref,login_pref_list):
     if login_pref in login_pref_list:
         i = 0
@@ -32,7 +37,7 @@ def generate_logins(out_folder_path,csv_path,password_size):
     alphabet = string.ascii_letters + string.digits
 
     login_list = []
-    sha256_passwd_list = []
+    hashed_passwd_list = []
     center_list = []
 
     login_pref_list = []
@@ -51,16 +56,13 @@ def generate_logins(out_folder_path,csv_path,password_size):
         csv = "login,mdp\n"
 
         for i in range(int(nb)):
-            login = login_pref+str(i)
-            print("\t",login)
-            
+            login = login_pref+str(i)        
             login_list.append(login)
             
             passwd = ''.join(secrets.choice(alphabet) for i in range(password_size))
 
-            byte_passwd = str.encode(passwd)
-            sha256_passwd = hashlib.sha256(byte_passwd).hexdigest()
-            sha256_passwd_list.append(sha256_passwd)
+            hashed_passwd = hash_passwd(passwd)
+            hashed_passwd_list.append(hashed_passwd)
 
             center_list.append(login_pref)
 
@@ -71,7 +73,7 @@ def generate_logins(out_folder_path,csv_path,password_size):
         with open(csv_path,"w") as file:
             print(csv,file=file)
     
-    return login_list,sha256_passwd_list,center_list
+    return login_list,hashed_passwd_list,center_list
 
 if __name__ == "__main__":
     main()

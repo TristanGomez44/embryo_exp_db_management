@@ -14,14 +14,11 @@ DROP table image;
 
 ALTER TABLE image2 RENAME TO image;
 
-
-
 delete from center;
 delete from sqlite_sequence where name='center';
 
 delete from video;
 delete from sqlite_sequence where name='video';
 
-insert into video (id,patientName,idOwner,name,path,idCenter) values(0,'',6,'allimages','../uploads/dataset',1);
-
-update image set idVideo == 0;
+delete from user;
+delete from sqlite_sequence where name='user';
