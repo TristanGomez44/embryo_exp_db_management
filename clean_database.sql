@@ -22,3 +22,5 @@ delete from sqlite_sequence where name='video';
 
 delete from user;
 delete from sqlite_sequence where name='user';
+
+delete from annotation;

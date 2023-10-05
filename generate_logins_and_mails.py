@@ -7,7 +7,23 @@ import secrets
 import string
 import pathlib,hashlib
 
-def write_email(logins_csv,out_folder_path,email,mail_template_path,email_name_path,participant_nb):
+def get_name(email,email_name_dic):
+    name = list(email.split(".")[0])
+    
+    if email in email_name_dic:
+        name = email_name_dic[email]
+    else:
+        name[0] = str.capitalize(name[0])
+        name = "".join(name) 
+    return name
+
+def fill_placeholders(mail,name,participant_nb,logins_csv):
+    mail = mail.replace("{name}",name)
+    mail = mail.replace("{participant_nb}",str(participant_nb))
+    mail = mail.replace("{logins_mdps}",logins_csv)
+    return mail
+
+def write_email(logins_csv,mail_folder,email,mail_template_path,email_name_path,participant_nb):
 
     email_name_csv = np.genfromtxt(email_name_path,delimiter=",",dtype=str,skip_header=1)
     email_name_dic= {email:name for (email,name) in email_name_csv}
@@ -15,19 +31,11 @@ def write_email(logins_csv,out_folder_path,email,mail_template_path,email_name_p
     with open(mail_template_path, 'r') as file:
         mail = file.read()
 
-    name = list(email.split(".")[0])
-    
-    if email in email_name_dic:
-        name = email_name_dic[email]
-    else:
-        name[0] = str.capitalize(name[0])
-        name = "".join(name)
+    name = get_name(email,email_name_dic)
 
-    mail = mail.replace("{name}",name)
-    mail = mail.replace("{participant_nb}",participant_nb)
-    mail = mail.replace("{logins_mdps}",logins_csv)
+    email = fill_placeholders(email,name,participant_nb,logins_csv)
 
-    with open(out_folder_path / "mails" / (str(email) + ".txt"),"w") as file:
+    with open(os.path.join(mail_folder,email + ".txt"),"w") as file:
         print(mail,file=file)
 
 def hash_passwd(passwd):
@@ -45,14 +53,12 @@ def prevent_duplicate(login_pref,login_pref_list):
 
     return login_pref 
 
-def generate_logins_and_mails(out_folder_path,csv_path,password_size,mail_template_path,email_name_path,participant_target_nb):
+def generate_logins_and_mails(login_folder,mail_folder,user_nb_csv_path,password_size,mail_template_path,email_name_path,participant_target_nb):
 
-    out_folder_path = pathlib.Path(out_folder_path)
-    os.makedirs(out_folder_path,exist_ok=True)
-    os.makedirs(out_folder_path / "logins",exist_ok=True)
-    os.makedirs(out_folder_path / "mails",exist_ok=True)
+    os.makedirs(login_folder,exist_ok=True)
+    os.makedirs(mail_folder,exist_ok=True)
 
-    csv = np.genfromtxt(csv_path,delimiter=",",dtype=str)
+    user_nb_csv = np.genfromtxt(user_nb_csv_path,delimiter=",",dtype=str)
     alphabet = string.ascii_letters + string.digits
 
     login_list = []
@@ -61,13 +67,13 @@ def generate_logins_and_mails(out_folder_path,csv_path,password_size,mail_templa
 
     login_pref_list = []
 
-    actual_participant_nb = csv[:,1].astype(int).sum()
+    actual_participant_nb = user_nb_csv[:,1].astype(int).sum()
     missing_participant_nb = participant_target_nb - actual_participant_nb
     if missing_participant_nb>0:
         supp_row = np.array([["supp.lementary@default.fr",str(missing_participant_nb)]],dtype=str)
-        csv = np.concatenate((csv,supp_row),axis=0)
+        user_nb_csv = np.concatenate((user_nb_csv,supp_row),axis=0)
 
-    for (email,participant_nb) in csv:
+    for (email,participant_nb) in user_nb_csv:
         
         login_pref = email.split("@")[1].replace(".fr","").replace(".com","")
 
@@ -78,7 +84,7 @@ def generate_logins_and_mails(out_folder_path,csv_path,password_size,mail_templa
         if "-" in login_pref:
             login_pref = login_pref.split("-")[1]
 
-        logins_csv = "identifiant,mot de passe\n"
+        logins_csv = "identifiant mot de passe\n"
 
         for i in range(int(participant_nb)):
             login = login_pref+str(i)        
@@ -91,18 +97,15 @@ def generate_logins_and_mails(out_folder_path,csv_path,password_size,mail_templa
 
             center_list.append(login_pref)
 
-            logins_csv += f"{login},{passwd}"
+            logins_csv += f"{login} {passwd}"
 
             if i < int(participant_nb) - 1:
                 logins_csv += "\n"
         
-        csv_path = pathlib.Path(out_folder_path,"logins",login_pref+".csv")
+        csv_path = os.path.join(login_folder,login_pref+".csv")
         with open(csv_path,"w") as file:
             print(logins_csv,file=file)
     
-        write_email(logins_csv,out_folder_path,email,mail_template_path,email_name_path,participant_nb)
+        write_email(logins_csv,mail_folder,email,mail_template_path,email_name_path,participant_nb)
 
     return login_list,hashed_passwd_list,center_list
-
-if __name__ == "__main__":
-    main()

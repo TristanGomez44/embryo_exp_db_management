@@ -49,13 +49,13 @@ def main():
             wrong_annot_nb_ids.append((img,idVideos))
     
     assert len(duplicate_ids) == 0,f"Somes images are included several times in videos {duplicate_ids}"
-    assert len(wrong_annot_nb_ids) == 0,f"Somes images have a wrong number of annotations {wrong_annot_nb_ids}"
+    assert len(wrong_annot_nb_ids) == 0,f"Somes images have a incorrect number of videos {wrong_annot_nb_ids}"
 
     csv = "idVideo,count,video_name,idOwner,username\n"
 
     for idVideo in range(1,args.video_number+1):
 
-        query = f"select COUNT(*) from image where idVideo=={idVideo}"
+        query = f"select COUNT(*) from image where idVideo=={idVideo} and nameImage like 'F0%'"
         c.execute(query)
         count = c.fetchone()[0]
 
