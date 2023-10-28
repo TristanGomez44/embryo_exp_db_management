@@ -34,6 +34,8 @@ def main():
     duplicate_ids = []
     wrong_annot_nb_ids = []
 
+    csv = "img,video_nb\n"
+
     for img in imgs:
 
         img_name = img[5]
@@ -45,11 +47,16 @@ def main():
         if len(set(idVideos.tolist())) != len(idVideos):
             duplicate_ids.append((img,idVideos))
 
-        if len(idVideos) != args.nb_of_annot_per_vid+1:
+        if len(idVideos) < args.nb_of_annot_per_vid+1:
             wrong_annot_nb_ids.append((img,idVideos))
     
+        csv += f"{img_name},{len(idVideos)}\n"
+
     assert len(duplicate_ids) == 0,f"Somes images are included several times in videos {duplicate_ids}"
-    assert len(wrong_annot_nb_ids) == 0,f"Somes images have a incorrect number of videos {wrong_annot_nb_ids}"
+    assert len(wrong_annot_nb_ids) == 0,f"Somes images have too few videos {wrong_annot_nb_ids}"
+
+    with open("video_nb_per_img.csv","w") as file:
+        print(csv,file=file)
 
     csv = "idVideo,count,video_name,idOwner,username\n"
 

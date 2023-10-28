@@ -7,6 +7,8 @@ import numpy as np
 from generate_logins_and_mails import generate_logins_and_mails,hash_passwd
 from test import single_match_query
 
+DEBUG_VIDEO_NAME = "allimages"
+
 def make_backup(video_nb,database_path):
     database_copy_path = f"database_{video_nb}_videos.db"
     assert not os.path.exists(database_copy_path), "Database already exists"
@@ -23,12 +25,12 @@ def add_admin_and_debug_user(debug_user_name,c):
     c.execute(f"insert into user (username,password,isAdmin,isContributor,isExpert,idCenter) values('admin','{hashed_admin_passwd}',1,0,0,0)")
     c.execute(f"insert into user (username,password,isAdmin,isContributor,isExpert,idCenter) values('{debug_user_name}','{hashed_debug_passwd}',0,0,1,0)")
 
-def add_debug_video(debug_user_name,c,debug_video_name="allimages"):
+def add_debug_video(debug_user_name,c):
     debug_user_id = single_match_query(f"select id from user where username=='{debug_user_name}'",c)[0]
     
-    c.execute(f"insert into video (id,patientName,idOwner,name,path,idCenter) values(0,'',{debug_user_id},'{debug_video_name}','../uploads/dataset',1)")
+    c.execute(f"insert into video (id,patientName,idOwner,name,path,idCenter) values(0,'',{debug_user_id},'{DEBUG_VIDEO_NAME}','../uploads/dataset',1)")
 
-    debug_video_id = single_match_query(f"select id from video where name=='{debug_video_name}'",c)[0]
+    debug_video_id = single_match_query(f"select id from video where name=='{DEBUG_VIDEO_NAME}'",c)[0]
 
     c.execute(f"update image set idVideo == {debug_video_id}")
 

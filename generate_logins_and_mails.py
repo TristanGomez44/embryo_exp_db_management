@@ -7,6 +7,20 @@ import secrets
 import string
 import pathlib,hashlib
 
+def make_logins_csv(login_list,passwd_list,login_folder,login_pref):
+    logins_csv = "identifiant mot de passe\n"
+    for i,(login,passwd) in enumerate(zip(login_list,passwd_list)):
+        logins_csv += f"{login} {passwd}"
+
+        if i < int(len(login_list)) - 1:
+            logins_csv += "\n"
+            
+    csv_path = os.path.join(login_folder,login_pref+".csv")
+    with open(csv_path,"w") as file:
+        print(logins_csv,file=file)
+    
+    return logins_csv
+
 def get_name(email,email_name_dic):
     name = list(email.split(".")[0])
     
@@ -23,20 +37,24 @@ def fill_placeholders(mail,name,participant_nb,logins_csv):
     mail = mail.replace("{logins_mdps}",logins_csv)
     return mail
 
-def write_email(logins_csv,mail_folder,email,mail_template_path,email_name_path,participant_nb):
+def write_email(logins_csv,mail_folder,email_adress,mail_template_path,email_name_path,participant_nb):
 
     email_name_csv = np.genfromtxt(email_name_path,delimiter=",",dtype=str,skip_header=1)
     email_name_dic= {email:name for (email,name) in email_name_csv}
 
     with open(mail_template_path, 'r') as file:
-        mail = file.read()
+        content = file.read()
 
-    name = get_name(email,email_name_dic)
+    name = get_name(email_adress,email_name_dic)
 
-    email = fill_placeholders(email,name,participant_nb,logins_csv)
+    content = fill_placeholders(content,name,participant_nb,logins_csv)
 
-    with open(os.path.join(mail_folder,email + ".txt"),"w") as file:
-        print(mail,file=file)
+    with open(os.path.join(mail_folder,email_adress + ".txt"),"w") as file:
+        print(content,file=file)
+
+def generate_passwd(alphabet,size):
+    passwd = ''.join(secrets.choice(alphabet) for i in range(size))
+    return passwd
 
 def hash_passwd(passwd):
     byte_passwd = str.encode(passwd)
@@ -62,6 +80,7 @@ def generate_logins_and_mails(login_folder,mail_folder,user_nb_csv_path,password
     alphabet = string.ascii_letters + string.digits
 
     login_list = []
+    passwd_list = []
     hashed_passwd_list = []
     center_list = []
 
@@ -90,7 +109,8 @@ def generate_logins_and_mails(login_folder,mail_folder,user_nb_csv_path,password
             login = login_pref+str(i)        
             login_list.append(login)
             
-            passwd = ''.join(secrets.choice(alphabet) for i in range(password_size))
+            passwd = generate_passwd(alphabet,password_size)
+            passwd_list.append(passwd)
 
             hashed_passwd = hash_passwd(passwd)
             hashed_passwd_list.append(hashed_passwd)
@@ -102,6 +122,8 @@ def generate_logins_and_mails(login_folder,mail_folder,user_nb_csv_path,password
             if i < int(participant_nb) - 1:
                 logins_csv += "\n"
         
+        logins_csv = make_logins_csv(login_list,passwd_list,login_folder,login_pref)
+
         csv_path = os.path.join(login_folder,login_pref+".csv")
         with open(csv_path,"w") as file:
             print(logins_csv,file=file)

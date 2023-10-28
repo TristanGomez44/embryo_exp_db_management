@@ -38,7 +38,7 @@ def main():
             mail = file.read()
         
         logins_mdp = mail.split("pour vous connecter sur le site:")[1].split("Une fois que vous avez réparti")[0].replace("\n\n","")
-        participant_nb = len(logins_mdp.split("\n"))
+        participant_nb = len(logins_mdp.split("\n"))-1
 
         email_adress = os.path.basename(path).replace(".txt","")
         name = get_name(email_adress,email_name_dic)
