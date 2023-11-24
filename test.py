@@ -7,7 +7,7 @@ import numpy as np
 def single_match_query(query,c):
     c.execute(query)
     matching_rows = c.fetchall()
-    assert len(matching_rows) == 1,f"Several rows match query='{query}':{matching_rows}"
+    assert len(matching_rows) == 1,f"Several or zero rows match query='{query}':{matching_rows}"
     matching_row = matching_rows[0]
     return matching_row
 
