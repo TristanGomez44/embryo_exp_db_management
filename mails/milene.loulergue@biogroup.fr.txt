@@ -1,0 +1,47 @@
+Bonjour Milene,
+
+Je suis Tristan Gomez, post-doctorant au Laboratoire des sciences du numérique de Nantes et c'est moi qui m'occupe de la partie technique de l'expérience que Thomas Fréour vous a proposé récemment par mail.
+
+Voici ci-dessous les instructions pour réaliser les annotations.
+
+(Notez que vous trouverez aussi ces instructions avec des captures d'écrans et des détails supplémentaires en pièce-jointe à ce mail.)
+
+1) L'expérience consiste donc d'abord à vous connecter sur ce site: https://expembryon.univ-nantes.fr/.
+Si je ne me trompe pas, vous êtes 4 à vouloir participer à l'étude dans votre équipe. 
+Voici donc ci-dessous les 4 identifiants et mot de passe à vous répartir entre pour vous connecter sur le site:
+
+identifiant mot de passe
+biogroup2_0 qw4XdQFlVF
+biogroup2_1 10mwmchZVM
+biogroup2_2 JsRRSgt6qx
+biogroup2_3 zn9mf7qfm1
+
+Une fois que vous avez réparti les identifiants, veuillez m'envoyer l'affectation choisie pour chaque personne (avec nom/prénom/mail) afin que je puisse envoyer un message en cas de problème.
+
+2) Une fois connecté, vous devrez cliquer sur le bouton "crayon" à droite pour commencer les annotations.
+
+3) Vous verez alors s'afficher une première image de blastocyste, et vous devrez annoter l'ICM, le TE et l'expansion selon la classification de Gardner.
+Les boutons rouges et verts servent respectivement à annoter l'ICM et le TE et les boutons bleus en bas permettent d'annoter l'expansion.
+Vous pouvez aussi effacer les annotations à l'aide du bouton "Effacer".
+
+Vous pouvez naviguer entre les plans focaux à l'aide des touches "flèche haut" et "flèche bas" du clavier.
+
+Si le blastocyste est trop jeune, vous pouvez annoter seulement l’Expansion et cliquer sur les boutons « ignorer » de l’ICM et du TE. Si l’image est trop sale, il est possible d’ignorer l’image (voir plus bas pour ignorer l’image).
+
+Enfin, une fois les annotations faite, vous pouvez passer à l'image suivante avec la flèche en haut à droite.
+
+Quelques remarques: 
+- Vous pouvez interrompre votre session d'annotation et reprendre plus tard, car les annotations sont systématiquement sauvegardées. Lorsque vous vous reconnecterez, le site vous fera reprendre là où vous étiez rendu.
+- Il est très important que vous annotiez les blastocystes chacun de votre côté, pour ne pas créer de biais dans le jeu de données.
+- Nous avons estimé qu'il faut environ maximum 10 secondes pour annoter un blastocyste. 
+Etant donné qu'il y a environ 135 blastocystes par participant à annoter, nous estimons que cela devrait vous prendre pas plus d'une demi-heure par participant.
+
+N'hésitez pas à communiquer avec moi si vous avez quelconque problème.
+
+Merci beaucoup de participer à cette expérience.
+
+En vous souhaitant une bonne journée,
+
+Cordialement,
+
+Tristan Gomez.
