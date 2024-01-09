@@ -113,23 +113,23 @@ def add_images_to_videos(video_names,nb_of_annot_per_vid,debug_video_id,c):
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--database_path",type=str,default="../database_25-07-2023.db")
+    parser.add_argument("--database_path",type=str,help="Path to the original database.")
     parser.add_argument("--cleaning_script_path",type=str,default="clean_database.sql")
     parser.add_argument("--seed",type=int,default=0)
-    parser.add_argument("--nb_of_annot_per_vid",type=int,default=5)
-    parser.add_argument("--participant_target_nb",type=int,default=80)
+    parser.add_argument("--nb_of_annot_per_vid",type=int,default=5,help="The target nb of images per video")
+    parser.add_argument("--participant_nb",type=int,default=80)
     
     parser.add_argument("--debug_user_name",type=str,default="debug")
 
     parser.add_argument("--user_nb_csv",type=str,default="comptes_expeembryon.csv")
     parser.add_argument("--mail_folder",type=str,default="./mails")
     parser.add_argument("--login_folder",type=str,default="./logins")
-    parser.add_argument("--password_size",type=int,default=10)
-    parser.add_argument("--mail_template_path",type=str,default="mail_template.txt")
-    parser.add_argument("--email_name_path",type=str,default="email_names.csv")
+    parser.add_argument("--password_size",type=int,default=10,help="Passwords length")
+    parser.add_argument("--mail_template_path",type=str,default="mail_template.txt",help="Path to the mail template.")
+    parser.add_argument("--email_name_path",type=str,default="email_names.csv",help="CSV containing the names of coordinator to write a proper email header to send them.")
     args = parser.parse_args()
 
-    login_list,hashed_passwd_list,center_list = generate_logins_and_mails(args.login_folder,args.mail_folder,args.user_nb_csv,args.password_size,args.mail_template_path,args.email_name_path,args.participant_target_nb)
+    login_list,hashed_passwd_list,center_list = generate_logins_and_mails(args.login_folder,args.mail_folder,args.user_nb_csv,args.password_size,args.mail_template_path,args.email_name_path,args.participant_nb)
 
     video_nb = len(login_list)
 

@@ -29,14 +29,14 @@ def generate_logins_and_passwd(user_nb,alphabet,password_size,login_pref):
 
     return login_list,passwd_list,hashed_passwd_list
 
-def add_imgs_to_videos(imgs_and_annot_nb,user_nb,video_names,img_per_participant,debug_video_id,c):
+def add_imgs_to_videos(imgs_and_annot_nb,user_nb,video_names,img_nb_per_participant,debug_video_id,c):
     for i in range(user_nb):
         imgs_and_annot_nb = list(sorted(imgs_and_annot_nb,key=lambda x:x[1]))
 
         idVideo = single_match_query(f"select id from video where name=='{video_names[i]}'",c)[0]
 
         imgs_to_add = []
-        for j in range(img_per_participant):
+        for j in range(img_nb_per_participant):
             img = imgs_and_annot_nb[j][0]
             imgs_to_add.append(img)
             imgs_and_annot_nb[j][1] += 1
@@ -99,20 +99,21 @@ def make_backup(database_path,debug,debug_database_path="database_debug.db"):
 def main():
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--database_path",type=str,default="./database.db")
-    parser.add_argument("--coordinator_email",type=str)  
-    parser.add_argument("--user_nb",type=int)
-    parser.add_argument("--login_prefix",type=str)
-    parser.add_argument("--img_per_participant",type=int,default=135)
+    parser.add_argument("--database_path",type=str,default="./database.db",help="Path to the database")
+    parser.add_argument("--coordinator_email",type=str,default="Email of the coordinator of the users to add. ")  
+    parser.add_argument("--user_nb",type=int,default="Number of users to add.")
+    parser.add_argument("--login_prefix",type=str,default="Prefix of the users login")
+    parser.add_argument("--img_nb_per_participant",type=int,default=135,help="The nb of images to assign to each other.")
 
     parser.add_argument("--debug",action="store_true")
 
     parser.add_argument("--mail_folder",type=str,default="./mails")
     parser.add_argument("--login_folder",type=str,default="./logins")
-    parser.add_argument("--password_size",type=int,default=10)
-    parser.add_argument("--mail_template_path",type=str,default="mail_template.txt")
-    parser.add_argument("--email_name_path",type=str,default="email_names.csv")
-    parser.add_argument("--nb_of_annot_per_vid",type=int,default=5)
+    parser.add_argument("--password_size",type=int,default=10,help="Passwords length")
+    parser.add_argument("--mail_template_path",type=str,default="mail_template.txt",help="Path to the mail template.")
+    parser.add_argument("--email_name_path",type=str,default="email_names.csv",help="CSV containing the names of coordinator to write a proper email header to send them.")
+    
+    parser.add_argument("--nb_of_annot_per_vid",type=int,default=5,help="The target nb of images per video")
 
     args = parser.parse_args()
 
@@ -138,7 +139,7 @@ def main():
 
     imgs_and_annot_nb = make_img_and_annot_nb_array(debug_video_id,c,args.nb_of_annot_per_vid)
     
-    add_imgs_to_videos(imgs_and_annot_nb,args.user_nb,video_names,args.img_per_participant,debug_video_id,c)
+    add_imgs_to_videos(imgs_and_annot_nb,args.user_nb,video_names,args.img_nb_per_participant,debug_video_id,c)
 
     conn.commit()
     conn.close()

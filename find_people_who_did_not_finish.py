@@ -11,7 +11,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--database_path",type=str,default="../database.db")
     parser.add_argument("--mail_dir_path",type=str,default="./mails/")    
-    parser.add_argument("--target",type=int,default=135) 
+    parser.add_argument("--img_nb_per_participant",type=int,default=135) 
     args = parser.parse_args()
 
     conn = sqlite3.connect(args.database_path)
@@ -45,7 +45,7 @@ def main():
                 if not annot_done:
                     break
 
-            if finished_nb<args.target:
+            if finished_nb<args.img_nb_per_participant:
                 did_not_finish_ids.append(idUser)
                     
             finished_nb_dic[idUser] = finished_nb
@@ -59,7 +59,7 @@ def main():
     center_list = []
 
     for idUser in finished_nb_dic:
-        if finished_nb_dic[idUser] < args.target:
+        if finished_nb_dic[idUser] < args.img_nb_per_participant:
             idCenter = single_match_query(f"select idCenter from user where id=={idUser}",c)[0]
             center_list.append(idCenter)
 

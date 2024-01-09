@@ -34,13 +34,6 @@ def main():
 
             login_psswd_list.append((login,passwd,path))
 
-            #if login in login_dic:
-            #    raise ValueError(f"Login {login} already defined in {login_dic[login]['path']}. Stored password is {login_dic[login]['passwd']}. Current password is {passwd}.")
-            #else:
-            #    login_dic[login] = {}
-            #    login_dic[login]["passwd"] = passwd
-            #    login_dic[login]["path"] = path
-    
     print("Found",len(login_psswd_list),"logins")
 
     for login,psswd,path in login_psswd_list:
